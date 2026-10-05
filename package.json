@@ -1,0 +1,11 @@
+{
+  "name": "qa-demo-app",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "shopify app dev",
+    "start": "node server.js",
+    "test": "node --test"
+  }
+}

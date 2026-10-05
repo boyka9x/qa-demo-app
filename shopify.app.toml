@@ -1,0 +1,19 @@
+# The dev app on the QA dev store. `shopify app dev` rewrites the URLs on every start.
+client_id = "c8806c244d57f0424c5747e13606f76c"
+name = "QA Demo"
+application_url = "https://example.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[access_scopes]
+scopes = ""
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = ["https://example.com/auth/callback"]
+
+[webhooks]
+api_version = "2025-10"
