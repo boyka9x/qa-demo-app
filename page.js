@@ -5,7 +5,8 @@ export function renderPage({ apiKey, products, error }) {
     ? `<p role="alert">Could not load products: ${escape(error)}</p>`
     : products.length === 0
       ? '<p>No products yet.</p>'
-      : `<table>
+      : `<p>${products.length} ${products.length === 1 ? 'product' : 'products'}</p>
+<table>
   <thead><tr><th>Product</th><th>Price</th><th>Stock</th></tr></thead>
   <tbody>${products.map((p) => `<tr><td>${escape(p.title)}</td><td>$${escape(p.price)}</td><td>${escape(p.stock)}</td></tr>`).join('')}</tbody>
 </table>`;

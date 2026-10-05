@@ -22,14 +22,30 @@ test('renders the products from the API', async () => {
   assert.match(html, /<td>Tee &#60;b&#62;<\/td><td>\$19<\/td><td>3<\/td>/);
 });
 
+test('shows the product count between the heading and the table', async () => {
+  const { html } = await get('/', ok([
+    { id: 1, title: 'A', price: 1, stock: 1 },
+    { id: 2, title: 'B', price: 2, stock: 2 },
+    { id: 3, title: 'C', price: 3, stock: 3 },
+  ]));
+  assert.match(html, /<h1>Products<\/h1>\s*<p>3 products<\/p>\s*<table>/);
+});
+
+test('uses the singular for one product', async () => {
+  const { html } = await get('/', ok([{ id: 1, title: 'A', price: 1, stock: 1 }]));
+  assert.match(html, /<p>1 product<\/p>/);
+});
+
 test('shows an empty state without products', async () => {
   const { html } = await get('/', ok([]));
   assert.match(html, /No products yet\./);
+  assert.doesNotMatch(html, /\d+ products?</);
 });
 
 test('shows an error when the API fails', async () => {
   const { html } = await get('/', async () => ({ ok: false, status: 502 }));
   assert.match(html, /role="alert">Could not load products: API 502/);
+  assert.doesNotMatch(html, /\d+ products?</);
 });
 
 test('unknown path is 404', async () => {
