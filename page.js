@@ -1,4 +1,5 @@
 const escape = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+const stockCell = (stock) => (Number(stock) === 0 ? '<span class="out-of-stock">Out of stock</span>' : escape(stock));
 
 export function renderPage({ apiKey, products, error }) {
   const body = error
@@ -7,7 +8,7 @@ export function renderPage({ apiKey, products, error }) {
       ? '<p>No products yet.</p>'
       : `<table>
   <thead><tr><th>Product</th><th>Price</th><th>Stock</th></tr></thead>
-  <tbody>${products.map((p) => `<tr><td>${escape(p.title)}</td><td>$${escape(p.price)}</td><td>${escape(p.stock)}</td></tr>`).join('')}</tbody>
+  <tbody>${products.map((p) => `<tr><td>${escape(p.title)}</td><td>$${escape(p.price)}</td><td>${stockCell(p.stock)}</td></tr>`).join('')}</tbody>
 </table>`;
   return `<!doctype html>
 <html lang="en">
@@ -23,6 +24,7 @@ export function renderPage({ apiKey, products, error }) {
   h1 { font-size: 20px; margin: 0 0 12px; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { text-align: left; padding: 8px; border-bottom: 1px solid #e3e3e3; }
+  .out-of-stock { color: #d72c0d; font-weight: 600; }
 </style>
 </head>
 <body>
