@@ -1,10 +1,17 @@
 const escape = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-export function renderPage({ apiKey, products, error }) {
+export function renderPage({ apiKey, products, error, q = '' }) {
+  const search = `<form method="get" action="/">
+  <label for="q">Search products</label>
+  <input id="q" name="q" type="search" value="${escape(q)}">
+  <button type="submit">Search</button>
+</form>`;
   const body = error
     ? `<p role="alert">Could not load products: ${escape(error)}</p>`
     : products.length === 0
-      ? '<p>No products yet.</p>'
+      ? q
+        ? `<p>No products match ${escape(q)}.</p>\n<a href="/">Clear search</a>`
+        : '<p>No products yet.</p>'
       : `<table>
   <thead><tr><th>Product</th><th>Price</th><th>Stock</th></tr></thead>
   <tbody>${products.map((p) => `<tr><td>${escape(p.title)}</td><td>$${escape(p.price)}</td><td>${escape(p.stock)}</td></tr>`).join('')}</tbody>
@@ -28,6 +35,7 @@ export function renderPage({ apiKey, products, error }) {
 <body>
 <main>
 <h1>Products</h1>
+${search}
 ${body}
 </main>
 </body>
